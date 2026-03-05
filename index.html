@@ -287,13 +287,13 @@
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────
-const BIN_ID      = "69a9e4b7d0ea881f40f2c783";
-const API_KEY     = "$2a$10$tKxPliVBKxQVJ5OeDikwHO7YXT7qC4cUfuGnO5DyHgM020xPk/ie6";
+const BIN_ID      = "69a9fdf5ae596e708f6365db";
+const API_KEY     = "$2a$10$SWVOxbhGDjDSMzjKGlxABO0zXIanqXk2kx6OQSpeQq2yWLhbMBxRa";
 const ADMIN_PASSWORD  = "trailblazer"; // ← your password here
 
 // We route PUT requests through a CORS proxy to avoid browser blocking
 const READ_URL  = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
-const WRITE_URL = `https://corsproxy.io/?url=https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const WRITE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
 const MAX_P = 20, MIN_P = 2;
 
@@ -315,11 +315,11 @@ let participants = [], activeCount = 12, pendingCount = 12, isAdmin = false;
 
 // ── API ──────────────────────────────────────────────────
 async function fetchData() {
-  const res = await fetch(READ_URL, {
-    headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" }
-  });
+  const res = await fetch(READ_URL);
   if (!res.ok) throw new Error(`Read failed: ${res.status}`);
-  return res.json();
+  const json = await res.json();
+  // Public bins return {record: {...}, metadata: {...}}
+  return json.record || json;
 }
 
 async function pushData(payload) {
