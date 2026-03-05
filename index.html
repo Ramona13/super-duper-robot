@@ -150,7 +150,7 @@
   .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(122,171,122,0.3);border-top-color:var(--sage);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-left:8px;}
   @keyframes spin{to{transform:rotate(360deg)}}
   .loading{text-align:center;padding:60px;font-style:italic;color:var(--stone);font-size:1rem;}
-  .error-msg{text-align:center;padding:40px;color:var(--ember);font-size:0.95rem;line-height:1.6;}
+  .error-msg{text-align:center;padding:40px;color:var(--ember);font-size:0.95rem;line-height:1.8;}
   .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--forest);border:1px solid var(--gold);color:var(--cream);padding:12px 24px;border-radius:3px;font-size:0.95rem;z-index:200;transition:transform 0.3s;white-space:nowrap;max-width:90vw;text-align:center;}
   .toast.show{transform:translateX(-50%) translateY(0);}
 
@@ -213,7 +213,6 @@
 
   <div id="panel-leaderboard" class="panel active">
     <div id="adminSection" style="display:none" class="admin-panel-wrap">
-
       <div class="admin-section">
         <h2>👥 Number of Participants</h2>
         <p>Adjust how many people are in the challenge. Adding creates new slots; reducing hides the last ones (data is preserved).</p>
@@ -228,7 +227,6 @@
           <span class="count-hint" id="countHint"></span>
         </div>
       </div>
-
       <div class="admin-section">
         <h2>✏️ Participant Names</h2>
         <p>Set names before the challenge starts. Only active slots are editable.</p>
@@ -237,7 +235,6 @@
           <button class="save-btn" id="saveNamesBtn" onclick="saveNames()">Save Names</button>
         </div>
       </div>
-
       <div class="admin-section">
         <h2>📋 Override All Steps</h2>
         <p>Correct or override any participant's step count directly.</p>
@@ -249,7 +246,6 @@
         </div>
       </div>
     </div>
-
     <div class="section-title">Current Rankings</div>
     <div class="leaderboard-grid" id="leaderboardGrid"><div class="loading">Loading challenge data<span class="spinner"></span></div></div>
   </div>
@@ -287,14 +283,8 @@
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────
-const BIN_ID      = "69a9fdf5ae596e708f6365db";
-const API_KEY     = "$2a$10$SWVOxbhGDjDSMzjKGlxABO0zXIanqXk2kx6OQSpeQq2yWLhbMBxRa";
-const ADMIN_PASSWORD  = "trailblazer"; // ← your password here
-
-// We route PUT requests through a CORS proxy to avoid browser blocking
-const READ_URL  = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
-const WRITE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-
+const SCRIPT_URL     = "https://script.google.com/macros/s/AKfycbzEuatRUZHdJOHnsBrRV-dO6tGkjl1DSf2zYyERKL_OA11WTb22rEIBwKpdT8WK7r_-Ow/exec";
+const ADMIN_PASSWORD = "trailblazer"; // ← your password here
 const MAX_P = 20, MIN_P = 2;
 
 const PARKS = [
@@ -313,39 +303,26 @@ const DNAMES  = ["Alex","Jordan","Morgan","Riley","Casey","Taylor","Quinn","Aver
 
 let participants = [], activeCount = 12, pendingCount = 12, isAdmin = false;
 
-// ── API ──────────────────────────────────────────────────
+// ── API — Google Apps Script uses no-cors POST via form encoding ─
 async function fetchData() {
-  const res = await fetch(READ_URL);
+  const res = await fetch(SCRIPT_URL);
   if (!res.ok) throw new Error(`Read failed: ${res.status}`);
-  const json = await res.json();
-  // Public bins return {record: {...}, metadata: {...}}
-  return json.record || json;
+  const text = await res.text();
+  try { return JSON.parse(text); } catch(e) { return {}; }
 }
 
 async function pushData(payload) {
-  // Try direct first, fall back to proxy
-  const urls = [
-    `https://api.jsonbin.io/v3/b/${BIN_ID}`,
-    `https://corsproxy.io/?url=${encodeURIComponent(`https://api.jsonbin.io/v3/b/${BIN_ID}`)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.jsonbin.io/v3/b/${BIN_ID}`)}`
-  ];
-
-  let lastErr;
-  for (const url of urls) {
-    try {
-      const res = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": API_KEY
-        },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) return await res.json();
-      lastErr = new Error(`HTTP ${res.status}`);
-    } catch(e) { lastErr = e; }
-  }
-  throw lastErr;
+  // Google Apps Script requires no-cors mode from external origins.
+  // We POST as form data; the script receives e.postData.contents.
+  const res = await fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(payload)
+  });
+  // no-cors always returns opaque response — we can't check res.ok,
+  // so we optimistically assume success and verify on next load.
+  return true;
 }
 
 // ── INIT ─────────────────────────────────────────────────
@@ -360,14 +337,17 @@ async function loadAndRender() {
     } else {
       participants = DNAMES.map((name,i)=>({name,steps:0,avatar:AVATARS[i],color:COLORS[i]}));
       activeCount  = 12;
-      await pushData({participants,activeCount,updatedAt:new Date().toISOString()});
+      await pushData({participants, activeCount, updatedAt: new Date().toISOString()});
     }
     pendingCount = activeCount;
     if (data.updatedAt) setLastUpdated(data.updatedAt);
     renderAll();
   } catch(e) {
     document.getElementById('leaderboardGrid').innerHTML =
-      `<div class="error-msg">⚠️ Could not load data.<br>Check your internet connection and try refreshing.<br><small style="color:var(--stone)">${e.message}</small></div>`;
+      `<div class="error-msg">⚠️ Could not load data.<br>
+      This may be a work account restriction.<br>
+      Try redeploying the script from a personal Gmail account.<br>
+      <small style="color:var(--stone);font-size:0.8rem">${e.message}</small></div>`;
   }
 }
 
@@ -386,9 +366,9 @@ function setLastUpdated(iso) {
 }
 
 // ── HELPERS ──────────────────────────────────────────────
-const activePart   = () => participants.slice(0, activeCount);
-const getPark      = s => { for(let i=PARKS.length-1;i>=0;i--){if(s>=PARKS[i].milestone)return PARKS[i];}return null; };
-const getNextPark  = s => { for(const p of PARKS){if(s<p.milestone)return p;}return null; };
+const activePart  = () => participants.slice(0, activeCount);
+const getPark     = s  => { for(let i=PARKS.length-1;i>=0;i--){if(s>=PARKS[i].milestone)return PARKS[i];}return null; };
+const getNextPark = s  => { for(const p of PARKS){if(s<p.milestone)return p;}return null; };
 
 // ── RENDER ───────────────────────────────────────────────
 function renderAll() {
@@ -401,7 +381,7 @@ function renderAll() {
 }
 
 function renderStats() {
-  const list = activePart();
+  const list   = activePart();
   const sorted = [...list].sort((a,b)=>b.steps-a.steps);
   const total  = list.reduce((s,p)=>s+p.steps,0);
   const parks  = PARKS.filter(pk=>list.some(p=>p.steps>=pk.milestone)).length;
@@ -498,8 +478,8 @@ function renderDropdown() {
 async function logSteps() {
   const name  = document.getElementById('logName').value;
   const steps = parseInt(document.getElementById('logSteps').value);
-  if (!name)                { showToast('⚠️ Please select your name'); return; }
-  if (isNaN(steps)||steps<0){ showToast('⚠️ Please enter a valid step count'); return; }
+  if (!name)                 { showToast('⚠️ Please select your name'); return; }
+  if (isNaN(steps)||steps<0) { showToast('⚠️ Please enter a valid step count'); return; }
   const idx = participants.findIndex(p=>p.name===name);
   if (idx<0) return;
   const btn = document.getElementById('logBtn');
@@ -509,12 +489,12 @@ async function logSteps() {
   try {
     await saveAll();
     const np=getPark(steps), op=getPark(old);
-    showToast(np&&(!op||np.milestone>op.milestone) ? `🎉 ${name} just reached ${np.name}!` : `✅ Steps logged for ${name}!`);
+    showToast(np&&(!op||np.milestone>op.milestone)?`🎉 ${name} just reached ${np.name}!`:`✅ Steps logged for ${name}!`);
     document.getElementById('logSteps').value='';
     renderAll(); renderLeaderboard(name); switchTab('leaderboard');
   } catch(e) {
     participants[idx].steps=old;
-    showToast('⚠️ Save failed. Check your connection and try again.');
+    showToast('⚠️ Save failed. Check connection and try again.');
   }
   btn.disabled=false; btn.textContent='Log Steps';
 }
@@ -554,7 +534,7 @@ function checkPassword() {
 function closePwModal(){ document.getElementById('pwModal').classList.remove('open'); document.getElementById('pwInput').value=''; }
 function handlePwKey(e){ if(e.key==='Enter')checkPassword(); if(e.key==='Escape')closePwModal(); }
 
-function adjustCount(d){
+function adjustCount(d) {
   pendingCount=Math.min(MAX_P,Math.max(MIN_P,pendingCount+d));
   document.getElementById('countDisplay').textContent=pendingCount;
   const diff=pendingCount-activeCount;
@@ -562,7 +542,7 @@ function adjustCount(d){
     diff>0?`+${diff} will be added`:diff<0?`${Math.abs(diff)} will be hidden`:'';
 }
 
-async function applyCount(){
+async function applyCount() {
   const btn=document.getElementById('applyCountBtn');
   btn.disabled=true; btn.textContent='Saving…';
   while(participants.length<pendingCount){
@@ -570,24 +550,27 @@ async function applyCount(){
     participants.push({name:DNAMES[i]||`Rep ${i+1}`,steps:0,avatar:AVATARS[i%AVATARS.length],color:COLORS[i%COLORS.length]});
   }
   activeCount=pendingCount;
-  try{ await saveAll(`✅ Updated to ${activeCount} participants`); document.getElementById('countHint').textContent=''; renderAll(); }
-  catch(e){ showToast('⚠️ Could not save. Try again.'); }
+  try {
+    await saveAll(`✅ Updated to ${activeCount} participants`);
+    document.getElementById('countHint').textContent='';
+    renderAll();
+  } catch(e) { showToast('⚠️ Could not save. Try again.'); }
   btn.disabled=false; btn.textContent='Apply';
 }
 
-async function saveNames(){
+async function saveNames() {
   const btn=document.getElementById('saveNamesBtn');
   btn.disabled=true; btn.textContent='Saving…';
   participants.forEach((p,i)=>{
     const el=document.getElementById(`name_${i}`);
     if(el&&!el.disabled){const v=el.value.trim();if(v)p.name=v;}
   });
-  try{ await saveAll('✅ Names saved!'); renderAll(); }
-  catch(e){ showToast('⚠️ Could not save. Try again.'); }
+  try { await saveAll('✅ Names saved!'); renderAll(); }
+  catch(e) { showToast('⚠️ Could not save. Try again.'); }
   btn.disabled=false; btn.textContent='Save Names';
 }
 
-async function adminSaveSteps(){
+async function adminSaveSteps() {
   const btn=document.getElementById('saveStepsBtn');
   btn.disabled=true; btn.textContent='Saving…';
   const old=participants.map(p=>p.steps);
@@ -595,32 +578,32 @@ async function adminSaveSteps(){
     const v=parseInt(document.getElementById(`asteps_${i}`)?.value);
     participants[i].steps=isNaN(v)?p.steps:Math.max(0,v);
   });
-  try{
+  try {
     await saveAll('✅ All steps saved!');
     activePart().forEach((p,i)=>{
       const np=getPark(p.steps),op=getPark(old[i]);
       if(np&&(!op||np.milestone>op.milestone)) setTimeout(()=>showToast(`🎉 ${p.name} reached ${np.name}!`),400);
     });
     renderAll();
-  } catch(e){ showToast('⚠️ Could not save. Try again.'); }
+  } catch(e) { showToast('⚠️ Could not save. Try again.'); }
   btn.disabled=false; btn.textContent='Save All Steps';
 }
 
 function confirmReset(){ document.getElementById('confirmModal').classList.add('open'); }
 function closeConfirm(){ document.getElementById('confirmModal').classList.remove('open'); }
-async function doReset(){
+async function doReset() {
   participants.forEach(p=>p.steps=0);
-  try{ await saveAll('🔄 All steps reset to zero'); closeConfirm(); renderAll(); }
-  catch(e){ showToast('⚠️ Could not reset. Try again.'); }
+  try { await saveAll('🔄 All steps reset to zero'); closeConfirm(); renderAll(); }
+  catch(e) { showToast('⚠️ Could not reset. Try again.'); }
 }
 
 // ── UI ───────────────────────────────────────────────────
-function switchTab(t){
+function switchTab(t) {
   document.querySelectorAll('.tab').forEach((x,i)=>x.classList.toggle('active',['leaderboard','parks'][i]===t));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+t).classList.add('active');
 }
-function showToast(msg){
+function showToast(msg) {
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3500);
