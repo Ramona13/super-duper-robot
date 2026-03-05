@@ -16,7 +16,6 @@
   body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
   .app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 60px;}
 
-  /* HEADER */
   header{text-align:center;padding:50px 20px 20px;}
   .badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:4px;text-transform:uppercase;padding:6px 18px;margin-bottom:20px;}
   h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:900;line-height:1;color:var(--cream);margin-bottom:6px;}
@@ -27,41 +26,39 @@
   .meta-item strong{display:block;font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cream);letter-spacing:0;}
   .divider{width:120px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:28px auto;}
 
-  /* TOP BAR */
   .top-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
   .top-bar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
   .mode-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--dust);padding:8px 16px;font-family:'Crimson Pro',serif;font-size:0.82rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;}
   .mode-btn:hover{background:rgba(255,255,255,0.12);color:var(--cream);}
   .mode-btn.active{background:var(--forest);border-color:rgba(212,149,42,0.4);color:var(--gold);}
   .admin-badge{background:rgba(212,149,42,0.15);border:1px solid rgba(212,149,42,0.35);color:var(--gold);padding:4px 12px;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;border-radius:2px;}
+  .refresh-btn{background:rgba(91,143,168,0.15);border:1px solid rgba(91,143,168,0.3);color:var(--sky);padding:8px 14px;font-family:'Crimson Pro',serif;font-size:0.82rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;}
+  .refresh-btn:hover{background:rgba(91,143,168,0.28);color:var(--cream);}
 
-  /* LOG STEPS BANNER */
   .log-banner{background:linear-gradient(135deg,rgba(74,124,89,0.25),rgba(26,46,26,0.6));border:1px solid rgba(122,171,122,0.3);border-radius:3px;padding:20px 24px;margin-bottom:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
   .log-banner-text{flex:1;min-width:200px;}
   .log-banner-text h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--cream);margin-bottom:3px;}
   .log-banner-text p{font-size:0.85rem;color:var(--sage);font-style:italic;}
   .log-banner-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-  .log-select{background:rgba(0,0,0,0.35);border:1px solid rgba(122,171,122,0.25);border-radius:2px;padding:10px 14px;color:var(--cream);font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;cursor:pointer;min-width:140px;}
+  .log-select{background:rgba(0,0,0,0.35);border:1px solid rgba(122,171,122,0.25);border-radius:2px;padding:10px 14px;color:var(--cream);font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;cursor:pointer;min-width:150px;}
   .log-select:focus{border-color:var(--gold);}
-  .log-input{background:rgba(0,0,0,0.35);border:1px solid rgba(122,171,122,0.25);border-radius:2px;padding:10px 14px;color:var(--cream);font-family:'Playfair Display',serif;font-size:1rem;outline:none;width:130px;transition:border-color 0.2s;}
+  .log-input{background:rgba(0,0,0,0.35);border:1px solid rgba(122,171,122,0.25);border-radius:2px;padding:10px 14px;color:var(--cream);font-family:'Playfair Display',serif;font-size:1rem;outline:none;width:140px;transition:border-color 0.2s;}
   .log-input:focus{border-color:var(--gold);}
-  .log-btn{background:var(--moss);border:none;color:var(--cream);padding:10px 22px;font-family:'Crimson Pro',serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;white-space:nowrap;}
+  .log-btn{background:var(--moss);border:none;color:var(--cream);padding:10px 22px;font-family:'Crimson Pro',serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;white-space:nowrap;}
   .log-btn:hover{background:var(--sage);}
+  .log-btn:disabled{opacity:0.5;cursor:not-allowed;}
 
-  /* STATS */
   .stats-bar{display:flex;gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;margin-bottom:30px;}
   .stat-block{flex:1;padding:16px 20px;text-align:center;background:rgba(45,74,45,0.3);}
   .stat-block:not(:last-child){border-right:1px solid rgba(255,255,255,0.05);}
   .stat-val{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--cream);}
   .stat-lbl{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--stone);margin-top:2px;}
 
-  /* TABS */
   .tabs{display:flex;justify-content:center;gap:4px;margin-bottom:36px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:4px;max-width:420px;margin-left:auto;margin-right:auto;}
   .tab{flex:1;padding:10px 16px;background:none;border:none;color:var(--dust);font-family:'Crimson Pro',serif;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;}
   .tab.active{background:var(--forest);color:var(--cream);border:1px solid rgba(212,149,42,0.3);}
   .panel{display:none;} .panel.active{display:block;}
 
-  /* LEADERBOARD */
   .section-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--dust);letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
   .section-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.07);}
   .leaderboard-grid{display:flex;flex-direction:column;gap:10px;}
@@ -71,7 +68,7 @@
   .participant-card.rank-1::before{background:var(--gold);opacity:1;}
   .participant-card.rank-2::before{background:var(--stone);opacity:1;}
   .participant-card.rank-3::before{background:var(--dust);opacity:1;}
-  .participant-card.highlight{box-shadow:0 0 0 2px var(--sage);transform:translateX(3px);}
+  .participant-card.highlight{box-shadow:0 0 0 2px var(--sage);}
   .rank-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--stone);width:28px;text-align:center;flex-shrink:0;}
   .rank-1 .rank-num{color:var(--gold);} .rank-2 .rank-num{color:var(--dust);} .rank-3 .rank-num{color:#c4a882;}
   .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);}
@@ -85,7 +82,6 @@
   .step-count{font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream);text-align:right;white-space:nowrap;min-width:90px;}
   .step-label{font-family:'Crimson Pro',serif;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;color:var(--stone);display:block;}
 
-  /* PARKS */
   .parks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
   .park-card{background:linear-gradient(160deg,rgba(45,74,45,0.5),rgba(26,46,26,0.85));border:1px solid rgba(122,171,122,0.12);border-radius:3px;padding:22px;position:relative;overflow:hidden;transition:all 0.25s;}
   .park-card:hover{border-color:rgba(122,171,122,0.35);transform:translateY(-2px);}
@@ -101,37 +97,29 @@
   .park-unlocked-by{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07);font-size:0.78rem;color:var(--stone);}
   .park-unlocked-by strong{color:var(--gold);}
 
-  /* ADMIN PANEL */
   .admin-panel-wrap{margin-bottom:30px;}
   .admin-section{background:linear-gradient(135deg,rgba(45,74,45,0.35),rgba(26,46,26,0.65));border:1px solid rgba(212,149,42,0.18);border-radius:3px;padding:24px;margin-bottom:16px;}
   .admin-section h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);margin-bottom:6px;}
   .admin-section p{font-size:0.88rem;color:var(--dust);margin-bottom:18px;font-style:italic;}
-
-  /* Participant count */
   .count-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
   .count-label{font-size:0.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--sage);}
-  .count-btns{display:flex;align-items:center;gap:0;}
+  .count-btns{display:flex;align-items:center;}
   .count-btn{background:rgba(122,171,122,0.15);border:1px solid rgba(122,171,122,0.25);color:var(--cream);width:36px;height:36px;font-size:1.2rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
   .count-btn:first-child{border-radius:2px 0 0 2px;}
   .count-btn:last-child{border-radius:0 2px 2px 0;}
   .count-btn:hover{background:rgba(122,171,122,0.3);}
   .count-display{background:rgba(0,0,0,0.3);border-top:1px solid rgba(122,171,122,0.25);border-bottom:1px solid rgba(122,171,122,0.25);padding:0 18px;height:36px;display:flex;align-items:center;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--cream);min-width:50px;justify-content:center;}
   .count-hint{font-size:0.8rem;color:var(--stone);font-style:italic;}
-
-  /* Names grid */
   .names-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:16px;}
   .name-field{display:flex;flex-direction:column;gap:5px;}
   .name-field label{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--sage);}
   .name-field input{background:rgba(0,0,0,0.28);border:1px solid rgba(122,171,122,0.18);border-radius:2px;padding:9px 12px;color:var(--cream);font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;}
   .name-field input:focus{border-color:var(--sage);}
-
-  /* Steps grid */
   .steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:20px;}
   .steps-field{display:flex;flex-direction:column;gap:5px;}
   .steps-field label{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--sage);}
   .steps-field input{background:rgba(0,0,0,0.28);border:1px solid rgba(122,171,122,0.18);border-radius:2px;padding:9px 12px;color:var(--cream);font-family:'Playfair Display',serif;font-size:1.1rem;outline:none;transition:border-color 0.2s;width:100%;}
   .steps-field input:focus{border-color:var(--gold);}
-
   .btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
   .save-btn{background:var(--moss);border:none;color:var(--cream);padding:12px 28px;font-family:'Crimson Pro',serif;font-size:0.88rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;}
   .save-btn:hover{background:var(--sage);} .save-btn:disabled{opacity:0.5;cursor:not-allowed;}
@@ -139,7 +127,6 @@
   .btn-sm:hover{background:rgba(122,171,122,0.28);color:var(--cream);}
   .last-updated{font-size:0.8rem;color:var(--stone);font-style:italic;}
 
-  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(10,20,10,0.88);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.25s;}
   .modal-overlay.open{opacity:1;pointer-events:all;}
   .modal{background:var(--forest);border:1px solid rgba(212,149,42,0.3);border-radius:4px;padding:36px;max-width:360px;width:100%;transform:translateY(20px);transition:transform 0.25s;text-align:center;}
@@ -155,19 +142,15 @@
   .btn-primary:hover{background:var(--sage);}
   .btn-cancel{margin-top:10px;background:none;border:none;color:var(--stone);font-family:'Crimson Pro',serif;font-size:0.85rem;cursor:pointer;text-decoration:underline;}
   .btn-cancel:hover{color:var(--cream);}
-
-  /* CONFIRM MODAL */
-  .confirm-modal{max-width:400px;}
-  .confirm-modal h3{font-size:1.3rem;}
   .confirm-btns{display:flex;gap:10px;margin-top:4px;}
-  .btn-danger{flex:1;background:var(--ember);border:none;color:var(--cream);padding:12px;font-family:'Crimson Pro',serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:opacity 0.2s;}
-  .btn-danger:hover{opacity:0.85;}
+  .btn-danger{flex:1;background:var(--ember);border:none;color:var(--cream);padding:12px;font-family:'Crimson Pro',serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;}
   .btn-secondary{flex:1;background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--dust);padding:12px;font-family:'Crimson Pro',serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;}
   .btn-secondary:hover{border-color:rgba(255,255,255,0.4);color:var(--cream);}
 
-  .loading{text-align:center;padding:60px;font-style:italic;color:var(--stone);font-size:1rem;}
-  .loading::after{content:'';display:inline-block;width:16px;height:16px;border:2px solid rgba(122,171,122,0.3);border-top-color:var(--sage);border-radius:50%;animation:spin 0.8s linear infinite;margin-left:10px;vertical-align:middle;}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(122,171,122,0.3);border-top-color:var(--sage);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-left:8px;}
   @keyframes spin{to{transform:rotate(360deg)}}
+  .loading{text-align:center;padding:60px;font-style:italic;color:var(--stone);font-size:1rem;}
+  .error-msg{text-align:center;padding:40px;color:var(--ember);font-size:0.95rem;}
   .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--forest);border:1px solid var(--gold);color:var(--cream);padding:12px 24px;border-radius:3px;font-size:0.95rem;z-index:200;transition:transform 0.3s;white-space:nowrap;max-width:90vw;text-align:center;}
   .toast.show{transform:translateX(-50%) translateY(0);}
 
@@ -176,7 +159,7 @@
     .progress-section{display:none;}
     .log-banner{flex-direction:column;align-items:flex-start;}
     .log-banner-controls{width:100%;}
-    .log-select,.log-input{flex:1;}
+    .log-select,.log-input{flex:1;min-width:0;}
   }
 </style>
 </head>
@@ -195,25 +178,27 @@
   </header>
   <div class="divider"></div>
 
-  <!-- TOP BAR -->
   <div class="top-bar">
-    <div style="font-size:0.82rem;color:var(--stone);font-style:italic;" id="lastUpdatedTop"></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:0.82rem;color:var(--stone);font-style:italic;" id="lastUpdatedTop"></span>
+    </div>
     <div class="top-bar-right">
+      <button class="refresh-btn" onclick="loadAndRender()">↻ Refresh</button>
       <span id="adminBadge" style="display:none" class="admin-badge">🔑 Admin</span>
       <button class="mode-btn" id="adminToggleBtn" onclick="handleAdminToggle()">Admin Login</button>
     </div>
   </div>
 
-  <!-- SELF-LOG BANNER -->
+  <!-- SELF-LOG -->
   <div class="log-banner">
     <div class="log-banner-text">
       <h3>🥾 Log Your Steps</h3>
-      <p>Select your name, enter your total step count so far, and hit Log.</p>
+      <p>Select your name, enter your total cumulative step count, and hit Log.</p>
     </div>
     <div class="log-banner-controls">
-      <select class="log-select" id="logName"><option value="">— Select name —</option></select>
-      <input class="log-input" type="number" id="logSteps" placeholder="Total steps" min="0" max="300000">
-      <button class="log-btn" onclick="logSteps()">Log Steps</button>
+      <select class="log-select" id="logName"><option value="">— Select your name —</option></select>
+      <input class="log-input" type="number" id="logSteps" placeholder="Total steps" min="0" max="500000">
+      <button class="log-btn" id="logBtn" onclick="logSteps()">Log Steps</button>
     </div>
   </div>
 
@@ -225,22 +210,17 @@
     <div class="stat-block"><div class="stat-val" id="statParks">0/7</div><div class="stat-lbl">Parks Unlocked</div></div>
   </div>
 
-  <!-- TABS -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('leaderboard')">🏆 Leaderboard</button>
     <button class="tab" onclick="switchTab('parks')">🗺️ Parks</button>
   </div>
 
-  <!-- LEADERBOARD PANEL -->
   <div id="panel-leaderboard" class="panel active">
-
-    <!-- ADMIN SECTION -->
     <div id="adminSection" style="display:none" class="admin-panel-wrap">
 
-      <!-- Participant count -->
       <div class="admin-section">
         <h2>👥 Number of Participants</h2>
-        <p>Adjust how many people are in the challenge. Adding participants creates new slots; removing hides the last ones (their data is preserved).</p>
+        <p>Adjust how many people are in the challenge. Adding participants creates new slots; reducing hides the last ones (data is preserved).</p>
         <div class="count-row">
           <span class="count-label">Participants</span>
           <div class="count-btns">
@@ -248,25 +228,23 @@
             <div class="count-display" id="countDisplay">12</div>
             <button class="count-btn" onclick="adjustCount(1)">+</button>
           </div>
-          <button class="btn-sm" onclick="applyCount()">Apply</button>
+          <button class="btn-sm" id="applyCountBtn" onclick="applyCount()">Apply</button>
           <span class="count-hint" id="countHint"></span>
         </div>
       </div>
 
-      <!-- Names editor -->
       <div class="admin-section">
         <h2>✏️ Participant Names</h2>
-        <p>Edit names here before the challenge starts. Changes apply to the leaderboard immediately.</p>
+        <p>Set names before the challenge starts. Only active participant slots are shown.</p>
         <div class="names-grid" id="namesGrid"></div>
         <div class="btn-row">
-          <button class="save-btn" onclick="saveNames()">Save Names</button>
+          <button class="save-btn" id="saveNamesBtn" onclick="saveNames()">Save Names</button>
         </div>
       </div>
 
-      <!-- Bulk steps override -->
       <div class="admin-section">
         <h2>📋 Override All Steps</h2>
-        <p>Use this to correct or override any participant's step count directly. Reps can also update their own steps using the Log Steps bar above.</p>
+        <p>Correct or override any participant's step count. Participants can also update their own using the Log Steps bar above.</p>
         <div class="steps-grid" id="adminStepsGrid"></div>
         <div class="btn-row">
           <button class="save-btn" id="saveStepsBtn" onclick="adminSaveSteps()">Save All Steps</button>
@@ -277,13 +255,12 @@
     </div>
 
     <div class="section-title">Current Rankings</div>
-    <div class="leaderboard-grid" id="leaderboardGrid"><div class="loading">Loading challenge data</div></div>
+    <div class="leaderboard-grid" id="leaderboardGrid"><div class="loading">Loading challenge data<span class="spinner"></span></div></div>
   </div>
 
-  <!-- PARKS PANEL -->
   <div id="panel-parks" class="panel">
     <div class="section-title">Your Trail</div>
-    <div class="parks-grid" id="parksGrid"><div class="loading">Loading parks</div></div>
+    <div class="parks-grid" id="parksGrid"><div class="loading">Loading parks<span class="spinner"></span></div></div>
   </div>
 </div>
 
@@ -301,7 +278,7 @@
 
 <!-- Confirm Reset Modal -->
 <div class="modal-overlay" id="confirmModal">
-  <div class="modal confirm-modal">
+  <div class="modal">
     <div class="modal-icon">⚠️</div>
     <h3>Reset All Steps?</h3>
     <p>This will set every participant's step count to zero. This cannot be undone.</p>
@@ -315,9 +292,12 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ───────────────────────────────────────────────
-const ADMIN_PASSWORD = "trailblazer"; // ← Change before sharing!
-const STORAGE_KEY    = "npwc_v3_shared";
+// ── JSONBIN CONFIG ───────────────────────────────────────
+const BIN_ID  = "69a9e4b7d0ea881f40f2c783";
+const API_KEY = "$2a$10$tKxPliVBKxQVJ5OeDikwHO7YXT7qC4cUfuGnO5DyHgM020xPk/ie6";
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+const ADMIN_PASSWORD  = "trailblazer"; // ← Change this before sharing!
 const MAX_PARTICIPANTS = 20;
 const MIN_PARTICIPANTS = 2;
 
@@ -338,38 +318,51 @@ const DEFAULT_NAMES = ["Alex","Jordan","Morgan","Riley","Casey","Taylor","Quinn"
 // ── STATE ────────────────────────────────────────────────
 let participants = [];
 let activeCount  = 12;
-let isAdmin      = false;
 let pendingCount = 12;
+let isAdmin      = false;
 
-// ── STORAGE ──────────────────────────────────────────────
-async function loadData() {
+// ── JSONBIN API ──────────────────────────────────────────
+async function fetchData() {
+  const res = await fetch(BIN_URL + "/latest", {
+    headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" }
+  });
+  if (!res.ok) throw new Error("Failed to fetch data");
+  return await res.json();
+}
+
+async function pushData(payload) {
+  const res = await fetch(BIN_URL, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error("Failed to save data");
+  return await res.json();
+}
+
+// ── INIT / LOAD ──────────────────────────────────────────
+async function loadAndRender() {
+  document.getElementById('leaderboardGrid').innerHTML = '<div class="loading">Loading<span class="spinner"></span></div>';
   try {
-    const r = await window.storage.get(STORAGE_KEY, true);
-    if (r && r.value) {
-      const d = JSON.parse(r.value);
-      participants = d.participants;
-      activeCount  = d.activeCount || participants.length;
-      pendingCount = activeCount;
-      return d;
+    const data = await fetchData();
+
+    if (data.participants && data.participants.length > 0) {
+      participants = data.participants;
+      activeCount  = data.activeCount || participants.length;
+    } else {
+      // First time — seed defaults
+      participants = DEFAULT_NAMES.map((name,i) => ({ name, steps:0, avatar:AVATARS[i], color:COLORS[i] }));
+      activeCount  = 12;
+      await pushData({ participants, activeCount, updatedAt: new Date().toISOString() });
     }
-  } catch(e) {}
-  // Seed defaults
-  participants = DEFAULT_NAMES.map((name,i) => ({ name, steps:0, avatar:AVATARS[i], color:COLORS[i] }));
-  activeCount = pendingCount = 12;
-  return null;
-}
 
-async function persistData() {
-  const payload = { participants, activeCount, updatedAt: new Date().toISOString() };
-  await window.storage.set(STORAGE_KEY, JSON.stringify(payload), true);
-  return payload;
-}
-
-// ── INIT ─────────────────────────────────────────────────
-async function init() {
-  const saved = await loadData();
-  if (saved?.updatedAt) setLastUpdated(saved.updatedAt);
-  renderAll();
+    pendingCount = activeCount;
+    if (data.updatedAt) setLastUpdated(data.updatedAt);
+    renderAll();
+  } catch(e) {
+    document.getElementById('leaderboardGrid').innerHTML =
+      '<div class="error-msg">⚠️ Could not load data. Check your internet connection and refresh.</div>';
+  }
 }
 
 function setLastUpdated(iso) {
@@ -378,31 +371,39 @@ function setLastUpdated(iso) {
   document.getElementById('lastUpdatedTop').textContent = str;
 }
 
+async function saveAll(successMsg) {
+  const payload = { participants, activeCount, updatedAt: new Date().toISOString() };
+  await pushData(payload);
+  setLastUpdated(payload.updatedAt);
+  if (successMsg) showToast(successMsg);
+  return payload;
+}
+
 // ── HELPERS ──────────────────────────────────────────────
-function activePart()     { return participants.slice(0, activeCount); }
-function getPark(steps)   { for (let i=PARKS.length-1;i>=0;i--) { if(steps>=PARKS[i].milestone) return PARKS[i]; } return null; }
-function getNextPark(s)   { for (const p of PARKS) { if(s<p.milestone) return p; } return null; }
+function activePart()   { return participants.slice(0, activeCount); }
+function getPark(s)     { for(let i=PARKS.length-1;i>=0;i--){if(s>=PARKS[i].milestone)return PARKS[i];}return null; }
+function getNextPark(s) { for(const p of PARKS){if(s<p.milestone)return p;}return null; }
 
 // ── RENDER ───────────────────────────────────────────────
 function renderAll() {
   renderStats();
   renderLeaderboard();
   renderParks();
-  renderAdminGrids();
+  if (isAdmin) renderAdminGrids();
   renderNameDropdown();
-  document.getElementById('metaCount').textContent = activeCount;
-  document.getElementById('countDisplay').textContent = activeCount;
+  document.getElementById('metaCount').textContent     = activeCount;
+  document.getElementById('countDisplay').textContent  = activeCount;
   pendingCount = activeCount;
 }
 
 function renderStats() {
   const list   = activePart();
   const sorted = [...list].sort((a,b)=>b.steps-a.steps);
-  const total  = list.reduce((s,p)=>s+p.steps,0);
+  const total  = list.reduce((s,p)=>s+p.steps, 0);
   const parks  = PARKS.filter(pk=>list.some(p=>p.steps>=pk.milestone)).length;
-  document.getElementById('statLeader').textContent = sorted[0]?.name||'—';
+  document.getElementById('statLeader').textContent = sorted[0]?.name || '—';
   document.getElementById('statTotal').textContent  = total.toLocaleString();
-  document.getElementById('statAvg').textContent    = Math.round(total/list.length).toLocaleString();
+  document.getElementById('statAvg').textContent    = list.length ? Math.round(total/list.length).toLocaleString() : '0';
   document.getElementById('statParks').textContent  = `${parks}/7`;
 }
 
@@ -410,13 +411,13 @@ function renderLeaderboard(highlightName) {
   const sorted = activePart().map((p,i)=>({...p,origIdx:i})).sort((a,b)=>b.steps-a.steps);
   const grid   = document.getElementById('leaderboardGrid');
   grid.innerHTML = '';
-  sorted.forEach((p,rank) => {
+  sorted.forEach((p, rank) => {
     const pct   = Math.min(100,(p.steps/105000)*100);
     const park  = getPark(p.steps);
     const next  = getNextPark(p.steps);
-    const label = park ? `Reached ${park.name}` : (next?`Heading to ${next.name}`:'Challenge Complete! 🎉');
-    const rc    = ['rank-1','rank-2','rank-3'][rank]||'';
-    const hl    = highlightName && p.name===highlightName ? 'highlight' : '';
+    const label = park ? `Reached ${park.name}` : (next ? `Heading to ${next.name}` : 'Challenge Complete! 🎉');
+    const rc    = ['rank-1','rank-2','rank-3'][rank] || '';
+    const hl    = (highlightName && p.name===highlightName) ? 'highlight' : '';
     const card  = document.createElement('div');
     card.className = `participant-card ${rc} ${hl}`;
     card.innerHTML = `
@@ -440,7 +441,7 @@ function renderParks() {
   grid.innerHTML = '';
   PARKS.forEach(park => {
     const unlockers = list.filter(p=>p.steps>=park.milestone);
-    const unlocked  = unlockers.length>0;
+    const unlocked  = unlockers.length > 0;
     const card = document.createElement('div');
     card.className = `park-card ${unlocked?'unlocked':''}`;
     card.innerHTML = `
@@ -459,26 +460,26 @@ function renderParks() {
 }
 
 function renderAdminGrids() {
-  // Names
+  // Names — show all slots
   const ng = document.getElementById('namesGrid');
   ng.innerHTML = '';
   participants.forEach((p,i) => {
     const active = i < activeCount;
     const f = document.createElement('div');
     f.className = 'name-field';
-    f.style.opacity = active ? '1' : '0.4';
+    f.style.opacity = active ? '1' : '0.38';
     f.innerHTML = `<label>${p.avatar} Slot ${i+1}${!active?' (inactive)':''}</label>
-      <input type="text" id="name_${i}" value="${p.name}" maxlength="24" placeholder="Name" ${!active?'disabled':''}>`;
+      <input type="text" id="name_${i}" value="${p.name}" maxlength="24" ${!active?'disabled':''}>`;
     ng.appendChild(f);
   });
-  // Steps
+  // Steps — active only
   const sg = document.getElementById('adminStepsGrid');
   sg.innerHTML = '';
   activePart().forEach((p,i) => {
     const f = document.createElement('div');
     f.className = 'steps-field';
     f.innerHTML = `<label>${p.avatar} ${p.name}</label>
-      <input type="number" id="asteps_${i}" value="${p.steps}" min="0" max="300000">`;
+      <input type="number" id="asteps_${i}" value="${p.steps}" min="0" max="500000">`;
     sg.appendChild(f);
   });
 }
@@ -499,32 +500,39 @@ function renderNameDropdown() {
 async function logSteps() {
   const name  = document.getElementById('logName').value;
   const steps = parseInt(document.getElementById('logSteps').value);
-  if (!name)          { showToast('⚠️ Please select your name'); return; }
-  if (isNaN(steps) || steps < 0) { showToast('⚠️ Please enter a valid step count'); return; }
+  if (!name)               { showToast('⚠️ Please select your name'); return; }
+  if (isNaN(steps)||steps<0) { showToast('⚠️ Please enter a valid step count'); return; }
 
-  const idx = participants.findIndex(p => p.name === name);
+  const idx = participants.findIndex(p=>p.name===name);
   if (idx < 0) return;
+
+  const btn = document.getElementById('logBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
 
   const oldSteps = participants[idx].steps;
   participants[idx].steps = steps;
-  const payload = await persistData();
-  setLastUpdated(payload.updatedAt);
 
-  // Celebrate new park
-  const np = getPark(steps), op = getPark(oldSteps);
-  if (np && (!op || np.milestone > op.milestone)) {
-    setTimeout(()=>showToast(`🎉 ${name} reached ${np.name}!`), 300);
-  } else {
-    showToast(`✅ Steps logged for ${name}!`);
+  try {
+    await saveAll();
+    const np = getPark(steps), op = getPark(oldSteps);
+    if (np && (!op || np.milestone > op.milestone)) {
+      showToast(`🎉 ${name} just reached ${np.name}!`);
+    } else {
+      showToast(`✅ Steps logged for ${name}!`);
+    }
+    document.getElementById('logSteps').value = '';
+    renderAll();
+    renderLeaderboard(name);
+    switchTab('leaderboard');
+  } catch(e) {
+    participants[idx].steps = oldSteps; // rollback
+    showToast('⚠️ Could not save. Check your connection and try again.');
   }
 
-  document.getElementById('logSteps').value = '';
-  renderAll();
-  renderLeaderboard(name);
-  switchTab('leaderboard');
+  btn.disabled = false; btn.textContent = 'Log Steps';
 }
 
-// ── ADMIN ────────────────────────────────────────────────
+// ── ADMIN ACTIONS ────────────────────────────────────────
 function handleAdminToggle() {
   if (isAdmin) {
     isAdmin = false;
@@ -535,7 +543,7 @@ function handleAdminToggle() {
     showToast('Logged out of admin mode');
   } else {
     document.getElementById('pwModal').classList.add('open');
-    setTimeout(()=>document.getElementById('pwInput').focus(),200);
+    setTimeout(()=>document.getElementById('pwInput').focus(), 200);
   }
 }
 
@@ -554,7 +562,7 @@ function checkPassword() {
   } else {
     const inp = document.getElementById('pwInput');
     inp.classList.add('error');
-    setTimeout(()=>inp.classList.remove('error'),400);
+    setTimeout(()=>inp.classList.remove('error'), 400);
     inp.value = ''; inp.placeholder = 'Incorrect — try again';
   }
 }
@@ -569,9 +577,8 @@ function handlePwKey(e) {
   if (e.key==='Escape') closePwModal();
 }
 
-// Participant count
 function adjustCount(delta) {
-  pendingCount = Math.min(MAX_PARTICIPANTS, Math.max(MIN_PARTICIPANTS, pendingCount + delta));
+  pendingCount = Math.min(MAX_PARTICIPANTS, Math.max(MIN_PARTICIPANTS, pendingCount+delta));
   document.getElementById('countDisplay').textContent = pendingCount;
   const diff = pendingCount - activeCount;
   document.getElementById('countHint').textContent =
@@ -580,66 +587,66 @@ function adjustCount(delta) {
 }
 
 async function applyCount() {
-  // If growing, ensure enough participant slots exist
+  const btn = document.getElementById('applyCountBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
   while (participants.length < pendingCount) {
     const i = participants.length;
-    participants.push({ name: DEFAULT_NAMES[i] || `Rep ${i+1}`, steps:0, avatar:AVATARS[i%AVATARS.length], color:COLORS[i%COLORS.length] });
+    participants.push({ name:DEFAULT_NAMES[i]||`Rep ${i+1}`, steps:0, avatar:AVATARS[i%AVATARS.length], color:COLORS[i%COLORS.length] });
   }
   activeCount = pendingCount;
-  const payload = await persistData();
-  setLastUpdated(payload.updatedAt);
-  document.getElementById('countHint').textContent = '';
-  renderAll();
-  showToast(`✅ Challenge updated to ${activeCount} participants`);
+  try {
+    await saveAll(`✅ Updated to ${activeCount} participants`);
+    document.getElementById('countHint').textContent = '';
+    renderAll();
+  } catch(e) { showToast('⚠️ Could not save. Try again.'); }
+  btn.disabled = false; btn.textContent = 'Apply';
 }
 
 async function saveNames() {
+  const btn = document.getElementById('saveNamesBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
   participants.forEach((p,i) => {
     const el = document.getElementById(`name_${i}`);
-    if (el && !el.disabled) { const v = el.value.trim(); if(v) p.name = v; }
+    if (el && !el.disabled) { const v=el.value.trim(); if(v) p.name=v; }
   });
-  const payload = await persistData();
-  setLastUpdated(payload.updatedAt);
-  renderAll();
-  showToast('✅ Names saved!');
+  try {
+    await saveAll('✅ Names saved!');
+    renderAll();
+  } catch(e) { showToast('⚠️ Could not save. Try again.'); }
+  btn.disabled = false; btn.textContent = 'Save Names';
 }
 
 async function adminSaveSteps() {
   const btn = document.getElementById('saveStepsBtn');
   btn.disabled = true; btn.textContent = 'Saving…';
   const oldSteps = participants.map(p=>p.steps);
-
   activePart().forEach((p,i) => {
-    const el = document.getElementById(`asteps_${i}`);
-    const v  = parseInt(el?.value);
+    const v = parseInt(document.getElementById(`asteps_${i}`)?.value);
     participants[i].steps = isNaN(v) ? p.steps : Math.max(0,v);
   });
-
-  const payload = await persistData();
-  setLastUpdated(payload.updatedAt);
-
-  activePart().forEach((p,i) => {
-    const np=getPark(p.steps), op=getPark(oldSteps[i]);
-    if (np && (!op || np.milestone>op.milestone)) {
-      setTimeout(()=>showToast(`🎉 ${p.name} reached ${np.name}!`),400);
-    }
-  });
-
-  btn.disabled=false; btn.textContent='Save All Steps';
-  renderAll();
-  showToast('✅ All steps saved!');
+  try {
+    await saveAll('✅ All steps saved!');
+    activePart().forEach((p,i) => {
+      const np=getPark(p.steps), op=getPark(oldSteps[i]);
+      if (np && (!op || np.milestone>op.milestone)) {
+        setTimeout(()=>showToast(`🎉 ${p.name} reached ${np.name}!`), 400);
+      }
+    });
+    renderAll();
+  } catch(e) { showToast('⚠️ Could not save. Try again.'); }
+  btn.disabled = false; btn.textContent = 'Save All Steps';
 }
 
 function confirmReset() { document.getElementById('confirmModal').classList.add('open'); }
 function closeConfirm() { document.getElementById('confirmModal').classList.remove('open'); }
 
 async function doReset() {
-  participants.forEach(p => p.steps = 0);
-  const payload = await persistData();
-  setLastUpdated(payload.updatedAt);
-  closeConfirm();
-  renderAll();
-  showToast('🔄 All steps reset to zero');
+  participants.forEach(p=>p.steps=0);
+  try {
+    await saveAll('🔄 All steps reset to zero');
+    closeConfirm();
+    renderAll();
+  } catch(e) { showToast('⚠️ Could not reset. Try again.'); }
 }
 
 // ── UI ───────────────────────────────────────────────────
@@ -652,17 +659,14 @@ function switchTab(tab) {
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
+  setTimeout(()=>t.classList.remove('show'), 3500);
 }
 
-// Close modals on overlay click
-document.getElementById('pwModal').addEventListener('click', e=>{ if(e.target===document.getElementById('pwModal')) closePwModal(); });
-document.getElementById('confirmModal').addEventListener('click', e=>{ if(e.target===document.getElementById('confirmModal')) closeConfirm(); });
+document.getElementById('pwModal').addEventListener('click',     e=>{if(e.target===document.getElementById('pwModal'))     closePwModal();});
+document.getElementById('confirmModal').addEventListener('click', e=>{if(e.target===document.getElementById('confirmModal')) closeConfirm();});
+document.getElementById('logSteps').addEventListener('keydown',  e=>{if(e.key==='Enter') logSteps();});
 
-// Enter key on log steps
-document.getElementById('logSteps').addEventListener('keydown', e=>{ if(e.key==='Enter') logSteps(); });
-
-init();
+loadAndRender();
 </script>
 </body>
 </html>
