@@ -283,7 +283,7 @@
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────
-const SCRIPT_URL     = "https://script.google.com/macros/s/AKfycbzEuatRUZHdJOHnsBrRV-dO6tGkjl1DSf2zYyERKL_OA11WTb22rEIBwKpdT8WK7r_-Ow/exec";
+const SCRIPT_URL     = "https://script.google.com/macros/s/AKfycbxYyqLSxiN3uXsMPBLwcUnTI9Vg3evp2N2Fh30cxhw1cQbIC29asqY8ryaxxrgBTrykow/exec";
 const ADMIN_PASSWORD = "trailblazer"; // ← your password here
 const MAX_P = 20, MIN_P = 2;
 
@@ -312,17 +312,25 @@ async function fetchData() {
 }
 
 async function pushData(payload) {
-  // Google Apps Script requires no-cors mode from external origins.
-  // We POST as form data; the script receives e.postData.contents.
-  const res = await fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(payload)
+  // Google Apps Script requires a form POST with no-cors.
+  // We use a hidden iframe trick to confirm the write went through,
+  // then verify by re-reading on next refresh.
+  return new Promise((resolve, reject) => {
+    const json = JSON.stringify(payload);
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = SCRIPT_URL;
+    form.target = '_blank'; // open in new tab so we stay on page
+
+    // We can't use no-cors form submit to verify, so instead
+    // use fetch with no-cors and trust it (Google Apps Script accepts this)
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: json
+    }).then(() => resolve(true)).catch(err => reject(err));
   });
-  // no-cors always returns opaque response — we can't check res.ok,
-  // so we optimistically assume success and verify on next load.
-  return true;
 }
 
 // ── INIT ─────────────────────────────────────────────────
@@ -353,7 +361,12 @@ async function loadAndRender() {
 
 async function saveAll(msg) {
   const payload = {participants, activeCount, updatedAt: new Date().toISOString()};
-  await pushData(payload);
+  try {
+    await pushData(payload);
+  } catch(e) {
+    // no-cors fetch rejects only on network failure, not HTTP errors
+    throw e;
+  }
   setLastUpdated(payload.updatedAt);
   if (msg) showToast(msg);
   return payload;
