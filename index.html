@@ -189,12 +189,12 @@
 
   <div class="log-banner">
     <div class="log-banner-text">
-      <h3>🥾 Log Your Steps</h3>
-      <p>Select your name, enter your total cumulative step count, and hit Log.</p>
+      <h3>🥾 Log Today's Steps</h3>
+      <p>Select your name, enter today's step count, and hit Log. Steps are added to your total.</p>
     </div>
     <div class="log-banner-controls">
       <select class="log-select" id="logName"><option value="">— Select your name —</option></select>
-      <input class="log-input" type="number" id="logSteps" placeholder="Total steps" min="0" max="500000">
+      <input class="log-input" type="number" id="logSteps" placeholder="Today's steps" min="0" max="500000">
       <button class="log-btn" id="logBtn" onclick="logSteps()">Log Steps</button>
     </div>
   </div>
@@ -498,11 +498,12 @@ async function logSteps() {
   const btn = document.getElementById('logBtn');
   btn.disabled=true; btn.textContent='Saving…';
   const old = participants[idx].steps;
-  participants[idx].steps = steps;
+  const newTotal = old + steps;
+  participants[idx].steps = newTotal;
   try {
     await saveAll();
-    const np=getPark(steps), op=getPark(old);
-    showToast(np&&(!op||np.milestone>op.milestone)?`🎉 ${name} just reached ${np.name}!`:`✅ Steps logged for ${name}!`);
+    const np=getPark(newTotal), op=getPark(old);
+    showToast(np&&(!op||np.milestone>op.milestone)?`🎉 ${name} just reached ${np.name}!`:`✅ +${steps.toLocaleString()} steps added! Total: ${newTotal.toLocaleString()}`);
     document.getElementById('logSteps').value='';
     renderAll(); renderLeaderboard(name); switchTab('leaderboard');
   } catch(e) {
